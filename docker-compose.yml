@@ -21,6 +21,8 @@ services:
             - ./www:/var/www
         links: 
             - mysql
+        depends_on: 
+            - mysql
 
     composer:  
         build: ./build/composer
