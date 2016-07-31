@@ -1,0 +1,43 @@
+version: '2'
+
+services:
+    nginx:
+        build: ./build/nginx
+        ports:
+            - "8080:80"
+        volumes:
+            - ./www:/var/www
+            - ./sites:/etc/nginx/sites-enabled
+            - ./logs/nginx:/var/log/nginx
+        links:
+            - php7fpm
+
+    artisan:
+        build: ./build/artisan
+        volumes:
+            - ./www:/var/www
+        links:
+            - mysql
+
+    composer:  
+        build: ./build/composer
+        volumes:
+            - ./www:/var/www
+
+    php7fpm:
+        build: ./build/php7fpm
+        volumes:
+            - ./www:/var/www
+        links:
+            - mysql
+
+    mysql:
+        build: ./build/mariadb
+        volumes:
+            - ./database:/var/lib/mysql
+            - ./logs/mysql:/var/log/mysql
+
+    nodejs:  
+        build: ./build/nodejs
+        volumes:
+            - ./www:/var/www
