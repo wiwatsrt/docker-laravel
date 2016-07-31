@@ -9,14 +9,17 @@ services:
             - ./www:/var/www
             - ./sites:/etc/nginx/sites-enabled
             - ./logs/nginx:/var/log/nginx
-        links:
+        links: 
+            - php7fpm 
+        depends_on: 
             - php7fpm
+            - mysql
 
     artisan:
         build: ./build/artisan
         volumes:
             - ./www:/var/www
-        links:
+        links: 
             - mysql
 
     composer:  
@@ -36,8 +39,23 @@ services:
         volumes:
             - ./database:/var/lib/mysql
             - ./logs/mysql:/var/log/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=secret
+            - MYSQL_DATABASE=homestead
+            - MYSQL_USER=homestead
+            - MYSQL_PASSWORD=secret
 
     nodejs:  
         build: ./build/nodejs
         volumes:
             - ./www:/var/www
+
+volumes:
+    sites:
+        driver: local
+    www:
+        driver: local
+    database:
+        driver: local
+    logs:
+        driver: local
