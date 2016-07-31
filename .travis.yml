@@ -1,5 +1,5 @@
 env:
-  DOCKER_COMPOSE_VERSION: 1.6.2
+  DOCKER_COMPOSE_VERSION: 1.8.0
 
 sudo: required
 
