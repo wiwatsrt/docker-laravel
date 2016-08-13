@@ -2,7 +2,7 @@ version: '2'
 
 services:
     nginx:
-        build: ./build/nginx
+        image: wiwatsrt/docker-laravel-nginx
         ports:
             - "8080:80"
         volumes:
@@ -16,7 +16,7 @@ services:
             - mysql
 
     artisan:
-        build: ./build/artisan
+        image: wiwatsrt/docker-laravel-artisan
         volumes:
             - ./www:/var/www
         links: 
@@ -25,19 +25,19 @@ services:
             - mysql
 
     composer:  
-        build: ./build/composer
+        image: wiwatsrt/docker-laravel-composer
         volumes:
             - ./www:/var/www
 
     php7fpm:
-        build: ./build/php7fpm
+        image: wiwatsrt/docker-laravel-php7fpm
         volumes:
             - ./www:/var/www
         links:
             - mysql
 
     mysql:
-        build: ./build/mariadb
+        image: wiwatsrt/docker-laravel-mariadb
         volumes:
             - ./database:/var/lib/mysql
             - ./logs/mysql:/var/log/mysql
@@ -48,7 +48,7 @@ services:
             - MYSQL_PASSWORD=secret
 
     nodejs:  
-        build: ./build/nodejs
+        image: wiwatsrt/docker-laravel-nodejs
         volumes:
             - ./www:/var/www
 
