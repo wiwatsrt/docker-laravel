@@ -18,7 +18,7 @@ script:
   - docker-compose build
   - docker-compose up -d
   - docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
-  - sed -i 's/127.0.0.1/mysql/g' .env
+  - sed -i 's/127.0.0.1/mysql/g' www/.env
   - docker-compose run --rm artisan make:auth
   - docker-compose run --rm artisan migrate
   - phpunit
