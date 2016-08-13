@@ -27,7 +27,7 @@ script:
   - docker-compose build
   - docker-compose up -d
   - docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
-  - sudo sed -e 's/DB_HOST=127.0.0.1/DB_HOST=mysql/g' > www/.env
+  - sudo sed -i 's/DB_HOST=127.0.0.1/DB_HOST=mysql/g' www/.env
   - docker-compose run --rm artisan make:auth
   - docker-compose run --rm artisan migrate --force
-  - vendor/bin/phpunit www
+  - www/vendor/bin/phpunit www
