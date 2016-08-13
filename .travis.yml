@@ -1,3 +1,13 @@
+language: php
+
+php:
+  - 5.5.9
+  - 5.5
+  - 5.6
+  - 7.0
+  - 7.1
+  - hhvm
+
 env:
   DOCKER_COMPOSE_VERSION: 1.8.0
 
@@ -18,7 +28,8 @@ script:
   - docker-compose build
   - docker-compose up -d
   - docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
-  - sed -i 's/127.0.0.1/mysql/g' www/.env
+  - chmod -R 777 www
+  - sed -i 's/DB_HOST=127.0.0.1/DB_HOST=mysql/g' www/.env
   - docker-compose run --rm artisan make:auth
   - docker-compose run --rm artisan migrate
-  - phpunit
+  - www/vendor/bin/phpunit
