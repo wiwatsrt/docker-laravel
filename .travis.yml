@@ -27,6 +27,8 @@ script:
   - docker-compose build
   - docker-compose up -d
   - docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
+  - sudo rm www/.env && cp .env.travis www/.env
+  - docker-compose run --rm artisan key:generate
   - docker-compose run --rm artisan make:auth
   - docker-compose run --rm artisan migrate
   - vendor/bin/phpunit www
