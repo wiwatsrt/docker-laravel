@@ -23,14 +23,12 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - docker-compose -v
   - docker -v
-  - travis_retry composer self-update
 
 script:
   - docker-compose build
   - docker-compose up -d
   - docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
-  - travis_retry composer update
   - sed -i 's/DB_HOST=127.0.0.1/DB_HOST=mysql/g' www/.env
   - docker-compose run --rm artisan make:auth
   - docker-compose run --rm artisan migrate
-  - www/vendor/bin/phpunit
+  - phpunit www
