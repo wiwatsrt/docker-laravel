@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/wiwatsrt/docker-laravel.svg?branch=master)](https://travis-ci.org/wiwatsrt/docker-laravel)
 
-## Laravel development environment in Docker Containers
+Laravel development environment in Docker Containers
 
 ### Installing Laravel Via Composer Create-Project
 
