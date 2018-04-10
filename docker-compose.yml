@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
     nginx:
@@ -11,28 +11,26 @@ services:
             - ./logs/nginx:/var/log/nginx
         links: 
             - php7fpm 
-        depends_on: 
-            - php7fpm
+
     artisan:
         image: wiwatsrt/docker-laravel-artisan
         volumes:
             - ./www:/var/www
         links: 
             - mysql
-        depends_on: 
-            - mysql
+
     composer:  
         image: wiwatsrt/docker-laravel-composer
         volumes:
             - ./www:/var/www
+
     php7fpm:
         image: wiwatsrt/docker-laravel-php7fpm
         volumes:
             - ./www:/var/www
         links:
             - mysql
-        depends_on: 
-            - mysql
+
     mysql:
         image: mysql:5.7
         volumes:
@@ -43,9 +41,11 @@ services:
             - MYSQL_DATABASE=homestead
             - MYSQL_USER=homestead
             - MYSQL_PASSWORD=secret
+
     nodejs:  
         image: wiwatsrt/docker-laravel-nodejs
         volumes:
             - ./www:/var/www
+            
 volumes:
     db_data:
