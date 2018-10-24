@@ -1,38 +1,54 @@
 version: '3'
 
 services:
-    nginx:
-        image: nginx:mainline-alpine
+    web:
+        image: wiwatsrt/docker-laravel-nginx
         ports:
             - "8080:80"
+        networks:
+            - frontend
         volumes:
             - ./www:/var/www
-            - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
             - ./logs/nginx:/var/log/nginx
-        links: 
-            - php7fpm 
-
-    artisan:
-        image: wiwatsrt/docker-laravel-artisan
-        volumes:
-            - ./www:/var/www
-        links: 
-            - mysql
-
-    composer:  
-        image: wiwatsrt/docker-laravel-composer
-        volumes:
-            - ./www:/var/www
-
-    php7fpm:
+        depends_on:
+            - php
+        environment:
+            - TZ=Asia/Bangkok
+    php:
         image: wiwatsrt/docker-laravel-php7fpm
         volumes:
             - ./www:/var/www
-        links:
+        networks:
+            - frontend
+            - backend
+        depends_on:
             - mysql
-
+            - redis
+        environment:
+            - TZ=Asia/Bangkok
+    artisan:  
+        image: wiwatsrt/docker-laravel-artisan
+        volumes:
+            - ./www:/var/www
+        networks:
+            - backend
+        depends_on:
+            - redis
+            - mysql
+    queue:
+        image: wiwatsrt/docker-laravel-artisan
+        volumes:
+            - ./www:/var/www
+        networks:
+            - backend
+        depends_on:
+            - redis
+            - mysql
+        command: queue:work redis --tries=3
     mysql:
         image: mysql:5.7
+        networks:
+            - backend
         volumes:
             - db_data:/var/lib/mysql
             - ./logs/mysql:/var/log/mysql
@@ -41,11 +57,19 @@ services:
             - MYSQL_DATABASE=homestead
             - MYSQL_USER=homestead
             - MYSQL_PASSWORD=secret
-
-    nodejs:  
-        image: wiwatsrt/docker-laravel-nodejs
+            - TZ=Asia/Bangkok
+    redis:
+        image: redis:3-alpine
+        networks:
+            - backend
+    composer:  
+        image: wiwatsrt/docker-laravel-composer
         volumes:
             - ./www:/var/www
-            
+
+networks:
+    frontend:
+    backend:
+
 volumes:
     db_data:
